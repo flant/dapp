@@ -1,52 +1,50 @@
-package docker_registry_test
+package docker_registry
 
 import (
 	. "github.com/onsi/ginkgo/extensions/table"
 	. "github.com/onsi/gomega"
-
-	"github.com/werf/werf/pkg/docker_registry"
 )
 
-type entry struct {
+type ResolveImplementationEntry struct {
 	imagesRepoAddress string
 	expectation       string
 }
 
-var _ = DescribeTable("resolve implementation name", func(entry entry) {
-	resolvedImplementation, err := docker_registry.ResolveImplementation(entry.imagesRepoAddress, "")
+var _ = DescribeTable("ResolveImplementation", func(entry ResolveImplementationEntry) {
+	resolvedImplementation, err := ResolveImplementation(entry.imagesRepoAddress, "")
 	Ω(err).ShouldNot(HaveOccurred())
 
 	Ω(resolvedImplementation).Should(Equal(entry.expectation))
 },
-	Entry("ecr", entry{
+	Entry("ecr", ResolveImplementationEntry{
 		imagesRepoAddress: "123456789012.dkr.ecr.test.amazonaws.com/repo",
 		expectation:       "ecr",
 	}),
-	Entry("acr", entry{
+	Entry("acr", ResolveImplementationEntry{
 		imagesRepoAddress: "test.azurecr.io/repo",
 		expectation:       "acr",
 	}),
-	Entry("default", entry{
+	Entry("default", ResolveImplementationEntry{
 		imagesRepoAddress: "localhost:5000/repo",
 		expectation:       "default",
 	}),
-	Entry("dockerhub", entry{
+	Entry("dockerhub", ResolveImplementationEntry{
 		imagesRepoAddress: "account/repo",
 		expectation:       "dockerhub",
 	}),
-	Entry("gcr", entry{
+	Entry("gcr", ResolveImplementationEntry{
 		imagesRepoAddress: "container.cloud.google.com/registry/repo",
 		expectation:       "gcr",
 	}),
-	Entry("github", entry{
+	Entry("github", ResolveImplementationEntry{
 		imagesRepoAddress: "docker.pkg.github.com/account/project/package",
 		expectation:       "github",
 	}),
-	Entry("harbor", entry{
+	Entry("harbor", ResolveImplementationEntry{
 		imagesRepoAddress: "harbor.company.com/project/repo",
 		expectation:       "harbor",
 	}),
-	Entry("quay", entry{
+	Entry("quay", ResolveImplementationEntry{
 		imagesRepoAddress: "quay.io/account/repo",
 		expectation:       "quay",
 	}),

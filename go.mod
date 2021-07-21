@@ -18,6 +18,7 @@ require (
 	github.com/cloudflare/cfssl v1.4.1 // indirect
 	github.com/containerd/containerd v1.5.0-beta.4 // indirect
 	github.com/docker/cli v20.10.5+incompatible
+	github.com/docker/distribution v2.7.1+incompatible
 	github.com/docker/docker v20.10.5+incompatible
 	github.com/docker/go v1.5.1-1 // indirect
 	github.com/docker/go-connections v0.4.0

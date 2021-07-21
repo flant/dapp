@@ -10,7 +10,7 @@ import (
 	"github.com/werf/logboek"
 )
 
-var generic *api
+var generic *genericApi
 
 func Init(ctx context.Context, insecureRegistry, skipTlsVerifyRegistry bool) error {
 	if logboek.Context(ctx).Debug().IsAccepted() {
@@ -28,15 +28,20 @@ func Init(ctx context.Context, insecureRegistry, skipTlsVerifyRegistry bool) err
 		logs.Debug.SetOutput(ioutil.Discard)
 	}
 
-	generic = newAPI(apiOptions{
+	var err error
+	generic, err = newGenericApi(ctx, apiOptions{
 		InsecureRegistry:      insecureRegistry,
 		SkipTlsVerifyRegistry: skipTlsVerifyRegistry,
 	})
 
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
 
-func API() *api {
+func API() *genericApi {
 	return generic
 }
 

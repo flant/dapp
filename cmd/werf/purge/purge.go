@@ -118,10 +118,6 @@ func runPurge() error {
 
 	common.ProcessLogProjectDir(&commonCmdData, giterminismManager.ProjectDir())
 
-	if err := common.DockerRegistryInit(&commonCmdData); err != nil {
-		return err
-	}
-
 	if err := docker.Init(ctx, *commonCmdData.DockerConfig, *commonCmdData.LogVerbose, *commonCmdData.LogDebug); err != nil {
 		return err
 	}
@@ -131,6 +127,10 @@ func runPurge() error {
 		return err
 	}
 	ctx = ctxWithDockerCli
+
+	if err := common.DockerRegistryInit(ctxWithDockerCli, &commonCmdData); err != nil {
+		return err
+	}
 
 	_, werfConfig, err := common.GetRequiredWerfConfig(ctx, &commonCmdData, giterminismManager, common.GetWerfConfigOptions(&commonCmdData, true))
 	if err != nil {

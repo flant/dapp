@@ -121,10 +121,6 @@ func runCleanup(ctx context.Context) error {
 		return err
 	}
 
-	if err := common.DockerRegistryInit(&commonCmdData); err != nil {
-		return err
-	}
-
 	if err := docker.Init(ctx, *commonCmdData.DockerConfig, *commonCmdData.LogVerbose, *commonCmdData.LogDebug); err != nil {
 		return err
 	}
@@ -134,6 +130,10 @@ func runCleanup(ctx context.Context) error {
 		return err
 	}
 	ctx = ctxWithDockerCli
+
+	if err := common.DockerRegistryInit(ctxWithDockerCli, &commonCmdData); err != nil {
+		return err
+	}
 
 	defer func() {
 		if err := common.RunAutoHostCleanup(ctx, &commonCmdData); err != nil {

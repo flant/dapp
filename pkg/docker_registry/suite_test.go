@@ -1,4 +1,4 @@
-package docker_registry_test
+package docker_registry
 
 import (
 	"testing"

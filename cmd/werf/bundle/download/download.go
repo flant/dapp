@@ -80,7 +80,7 @@ func runApply() error {
 		return fmt.Errorf("initialization error: %s", err)
 	}
 
-	if err := common.DockerRegistryInit(&commonCmdData); err != nil {
+	if err := common.DockerRegistryInit(ctx, &commonCmdData); err != nil {
 		return err
 	}
 

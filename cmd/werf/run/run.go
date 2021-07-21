@@ -44,8 +44,10 @@ type cmdDataType struct {
 	ImageName     string
 }
 
-var cmdData cmdDataType
-var commonCmdData common.CmdData
+var (
+	cmdData       cmdDataType
+	commonCmdData common.CmdData
+)
 
 func NewCmd() *cobra.Command {
 	cmd := &cobra.Command{
@@ -237,10 +239,6 @@ func runMain() error {
 		return err
 	}
 
-	if err := common.DockerRegistryInit(&commonCmdData); err != nil {
-		return err
-	}
-
 	if err := docker.Init(ctx, *commonCmdData.DockerConfig, *commonCmdData.LogVerbose, *commonCmdData.LogDebug); err != nil {
 		return err
 	}
@@ -250,6 +248,10 @@ func runMain() error {
 		return err
 	}
 	ctx = ctxWithDockerCli
+
+	if err := common.DockerRegistryInit(ctxWithDockerCli, &commonCmdData); err != nil {
+		return err
+	}
 
 	giterminismManager, err := common.GetGiterminismManager(&commonCmdData)
 	if err != nil {

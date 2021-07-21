@@ -1305,8 +1305,8 @@ func ProcessLogTerminalWidth(cmdData *CmdData) error {
 	return nil
 }
 
-func DockerRegistryInit(cmdData *CmdData) error {
-	return docker_registry.Init(BackgroundContext(), *cmdData.InsecureRegistry, *cmdData.SkipTlsVerifyRegistry)
+func DockerRegistryInit(ctx context.Context, cmdData *CmdData) error {
+	return docker_registry.Init(ctx, *cmdData.InsecureRegistry, *cmdData.SkipTlsVerifyRegistry)
 }
 
 func ValidateRepoContainerRegistry(containerRegistry string) error {

@@ -101,10 +101,6 @@ func run(imageName string) error {
 		return err
 	}
 
-	if err := common.DockerRegistryInit(&commonCmdData); err != nil {
-		return err
-	}
-
 	if err := docker.Init(ctx, *commonCmdData.DockerConfig, *commonCmdData.LogVerbose, *commonCmdData.LogDebug); err != nil {
 		return err
 	}
@@ -114,6 +110,10 @@ func run(imageName string) error {
 		return err
 	}
 	ctx = ctxWithDockerCli
+
+	if err := common.DockerRegistryInit(ctxWithDockerCli, &commonCmdData); err != nil {
+		return err
+	}
 
 	projectTmpDir, err := tmp_manager.CreateProjectDir(ctx)
 	if err != nil {

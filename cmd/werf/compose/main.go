@@ -307,10 +307,6 @@ func runMain(dockerComposeCmdName string, cmdData composeCmdData, commonCmdData 
 		return err
 	}
 
-	if err := common.DockerRegistryInit(&commonCmdData); err != nil {
-		return err
-	}
-
 	if err := docker.Init(ctx, *commonCmdData.DockerConfig, *commonCmdData.LogVerbose, *commonCmdData.LogDebug); err != nil {
 		return err
 	}
@@ -320,6 +316,10 @@ func runMain(dockerComposeCmdName string, cmdData composeCmdData, commonCmdData 
 		return err
 	}
 	ctx = ctxWithDockerCli
+
+	if err := common.DockerRegistryInit(ctxWithDockerCli, &commonCmdData); err != nil {
+		return err
+	}
 
 	defer func() {
 		if err := common.RunAutoHostCleanup(ctx, &commonCmdData); err != nil {
